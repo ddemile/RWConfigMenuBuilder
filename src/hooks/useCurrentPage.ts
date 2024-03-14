@@ -2,7 +2,7 @@ import { Element, Page } from "../utils/types.ts";
 import usePages from "./usePages.ts";
 
 export default function useCurrentPage() {
-    const { pages, currentPage, updatePage, deletePage } = usePages()
+    const { pages, currentPage, updatePage, deletePage, uniqueId } = usePages()
 
     const { selectedElementId, ...page } = pages[currentPage]
 
@@ -18,7 +18,7 @@ export default function useCurrentPage() {
         addElement(element: Element) {
             if (!element.color) element.color = "#a9a4b2"
             if (!element.description) element.description = "Default description"
-            if(!element.id) element.id = Math.round(Math.random() * 1000000).toFixed()
+            if(!element.id) element.id = uniqueId()
 
             const elements = structuredClone(page.elements)
             

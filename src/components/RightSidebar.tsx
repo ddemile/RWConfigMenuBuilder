@@ -8,12 +8,12 @@ import Button from './Button.tsx';
 import Options from './Options';
 
 export default function RightSidebar() {
-    const { pages, setPages } = usePages()
+    const { pages, setPages, setCurrentUniqueId, currentUniqueId } = usePages()
     const page = useCurrentPage()
     const { setIsOpen } = useConfig()
 
     const handleDownload = () => {
-    const fileData = JSON.stringify({ pages, uniqueId: 0 /* TODO */ });
+    const fileData = JSON.stringify({ pages, uniqueId: currentUniqueId });
         const blob = new Blob([fileData], { type: "text/plain" });
         const url = URL.createObjectURL(blob);
         const link = document.createElement("a");
@@ -31,8 +31,7 @@ export default function RightSidebar() {
             try {
                 const content = JSON.parse(fileContent)
                 setPages(content.pages ?? content)
-                // TODO
-                // uniqueIdRef.current = content.uniqueId ?? 0
+                setCurrentUniqueId(content.uniqueId)
                 toast.success("Save loaded",)
             } catch (error) {
                 toast.error("An error appened while reading the save")

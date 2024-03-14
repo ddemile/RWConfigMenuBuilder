@@ -4,6 +4,9 @@ import { Page } from "../utils/types.ts"
 export interface PagesState {
     pages: Page[],
     currentPage: number,
+    currentUniqueId: number,
+    uniqueId: () => string,
+    setCurrentUniqueId: (uniqueId: number) => void,
     createPage: (name: string) => void,
     deletePage: (index: number) => void,
     updatePage: (index: number, newProps: Partial<Page>) => void,
@@ -13,6 +16,17 @@ export interface PagesState {
 export default create<PagesState>()((set, get) => ({
     pages: [{ name: "Main", elements: [], selectedElementId: null }],
     currentPage: 0,
+    currentUniqueId: 0,
+    uniqueId() {
+        const { currentUniqueId } = get()
+        
+        set({ currentUniqueId: currentUniqueId + 1 })
+
+        return currentUniqueId.toFixed()
+    },
+    setCurrentUniqueId(uniqueId) {
+        set({ currentUniqueId: uniqueId })
+    },
     createPage(name) {
         const { pages } = get()
 
@@ -36,5 +50,5 @@ export default create<PagesState>()((set, get) => ({
     },
     setPages(pages) {
         set({ pages })
-    },
+    }
 }))

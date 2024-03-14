@@ -104,10 +104,10 @@ export default [
         element: () => <Rect opacity={0}></Rect>,
         subElement: (widget, { updatePage, currentPage, pages }) => <Slider {...widget} key={widget.id} minValue={widget.options.minValue} maxValue={widget.options.maxValue} value={widget.options.sliderValue} onSliderValueChange={(value) => {
             const data = [...pages[currentPage].elements]
-            const rectangle = data.find(rect => rect.id == widget.id)
-            rectangle.sliderValue = value
+            const element = data.find(rect => rect.id == widget.id)!
+            element.options.sliderValue = value
 
-            updatePage(currentPage, { elements: data, selectedElement: rectangle })
+            updatePage(currentPage, { elements: data, selectedElementId: element.id })
         }} />,
         options: [
             {
