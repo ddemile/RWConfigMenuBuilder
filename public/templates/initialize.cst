@@ -1,0 +1,10 @@
+public override void Initialize()
+{
+    base.Initialize();
+    
+    Tabs = new OpTab[$"TABS"];
+
+    $"CONTENT"
+}
+
+public static Options instance = new();

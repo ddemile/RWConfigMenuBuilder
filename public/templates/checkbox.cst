@@ -1,0 +1,6 @@
+OpCheckBox $"NAME" = new OpCheckBox($"CONFIGURABLE", new Vector2($"X"f, $"Y"f));
+ColorUtility.TryParseHtmlString("$"COLOR"", out Color $"NAME"Color);
+$"NAME".colorEdge = $"NAME"Color;
+$"NAME".description = $"CONFIGURABLE".info.description;
+
+Tabs[$"PAGEINDEX"].AddItems($"NAME");

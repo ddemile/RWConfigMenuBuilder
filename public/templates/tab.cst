@@ -1,0 +1,1 @@
+Tabs[$"TAB"] = new OpTab(this, "$"NAME"");

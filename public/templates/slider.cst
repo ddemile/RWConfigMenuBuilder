@@ -1,0 +1,7 @@
+OpSlider $"NAME" = new OpSlider($"CONFIGURABLE", new Vector2($"X"f, $"Y"f), $"WIDTH");
+ColorUtility.TryParseHtmlString("$"COLOR"", out Color $"NAME"Color);
+$"NAME".colorEdge = $"NAME"Color;
+$"NAME".colorLine = $"NAME"Color;
+$"NAME".description = $"CONFIGURABLE".info.description;
+
+Tabs[$"PAGEINDEX"].AddItems($"NAME");

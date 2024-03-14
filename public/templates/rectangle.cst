@@ -1,0 +1,5 @@
+OpRect $"NAME" = new OpRect(new Vector2($"X"f, $"Y"f), new Vector2($"WIDTH"f, $"HEIGHT"f));
+ColorUtility.TryParseHtmlString("$"COLOR"", out Color $"NAME"Color);
+$"NAME".colorEdge = $"NAME"Color;
+
+Tabs[$"PAGEINDEX"].AddItems($"NAME");

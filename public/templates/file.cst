@@ -1,0 +1,7 @@
+using UnityEngine;
+using Menu.Remix.MixedUI;
+
+namespace $"NAMESPACE"
+{
+    $"CONTENT"
+}

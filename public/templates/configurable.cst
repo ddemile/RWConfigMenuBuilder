@@ -1,0 +1,4 @@
+public static Configurable<$"TYPE"> $"NAME" = Options.instance.config.Bind<$"TYPE">("$"NAME"", $"DEFAULTVALUE", new ConfigurableInfo("$"DESCRIPTION"", $"ACCEPTABLE", "", new object[]
+{
+    "$"TAG""
+}));
