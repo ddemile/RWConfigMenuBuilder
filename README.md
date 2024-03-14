@@ -166,6 +166,7 @@ To submit new tools, you need to create a fork of the repository, make the chang
 - [Lodash](https://github.com/lodash/lodash)
 - [ReactIcons](https://github.com/react-icons/react-icons)
 - [ReactKonva](https://github.com/konvajs/react-konva)
-- [ReactToastify](https://github.com/fkhadra/react-toastify)
+- [Sonner](https://github.com/emilkowalski/sonner)
 - [Vite](https://github.com/vitejs/vite)
 - [ESLint](https://github.com/eslint/eslint)
+- [ReactModal](https://github.com/reactjs/react-modal)
