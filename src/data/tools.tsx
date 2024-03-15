@@ -266,7 +266,7 @@ export default [
             configurableType: "int"
         })
     }),
-    {
+    defineTool({
         name: "OpRect",
         width: 100,
         height: 60,
@@ -278,5 +278,5 @@ export default [
         onBuild: () => ({
             template: "rectangle"
         })
-    }
+    })
 ] as const satisfies Config
