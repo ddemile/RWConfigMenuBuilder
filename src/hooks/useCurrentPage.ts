@@ -1,8 +1,9 @@
-import { Element, Page } from "../utils/types.ts";
+import populateElement from "../utils/populateElement.ts";
+import { Page } from "../utils/types.ts";
 import usePages from "./usePages.ts";
 
 export default function useCurrentPage() {
-    const { pages, currentPage, updatePage, deletePage, uniqueId } = usePages()
+    const { pages, currentPage, updatePage, deletePage } = usePages()
 
     const { selectedElementId, ...page } = pages[currentPage]
 
@@ -15,14 +16,10 @@ export default function useCurrentPage() {
         delete() {
             deletePage(currentPage)
         },
-        addElement(element: Element) {
-            if (!element.color) element.color = "#a9a4b2"
-            if (!element.description) element.description = "Default description"
-            if(!element.id) element.id = uniqueId()
-
+        addElement(element: Parameters<typeof populateElement>[0]) {
             const elements = structuredClone(page.elements)
             
-            elements.push(element)
+            elements.push(populateElement(element))
 
             this.update({ elements })
         }

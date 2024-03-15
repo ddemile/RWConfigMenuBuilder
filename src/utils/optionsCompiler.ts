@@ -61,7 +61,7 @@ export class Component {
             for (const component of this.components) {
                 let componentTemplate = component.variablesDefined ? component.build({ inline: false }) : component.build({ variables: this.variables, inline: false })
                 let { spaces, tabs } = getSpacesAndTabs(template, '\\$"CONTENT"')
-                let lines = componentTemplate.split("\n").map(line => (componentTemplate.split("\n")[0] != line || content.length > 0) ? " ".repeat(spaces) + "\t".repeat(tabs) + line : line)
+                let lines: string[] = componentTemplate.split("\n").map(line => (componentTemplate.split("\n")[0] != line || content.length > 0) ? " ".repeat(spaces) + "\t".repeat(tabs) + line : line)
                 content.push(lines.join("\n"))
             }
 

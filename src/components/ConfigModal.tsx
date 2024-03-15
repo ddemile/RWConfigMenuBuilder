@@ -12,7 +12,7 @@ export default function ConfigModal() {
     }
 
     return <Modal id="config-modal" className="bg-white border-[4px] border-black rounded-md inline text-black p-[5px] max-w-[350px] w-auto" isOpen={isOpen} onRequestClose={() => setIsOpen(false)}>
-        <h3 className='m-0'>Settings</h3>
+        <h3 className='m-0 text-lg'>Settings</h3>
         <div className='flex flex-col items-start gap-[6px]'>
             <div className="flex items-center">
                 <input checked={config.titleElement} type="checkbox" name="titleElement" onChange={handleChange} />

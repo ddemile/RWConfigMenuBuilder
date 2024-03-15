@@ -16,7 +16,7 @@ import Button from './Button.tsx'
 import Input from './Input.tsx'
 
 export default function LeftSidebar() {
-    const { pages, createPage, currentPage } = usePages()
+    const { pages, createPage, currentPage, setCurrentPage } = usePages()
     const { config } = useConfig()
     const page = useCurrentPage()
     const stage = useStage()
@@ -24,8 +24,6 @@ export default function LeftSidebar() {
     const handleAddElement = (_e: any, tool: Tool) => {
         const width = tool.width
         const height = tool.height
-
-        console.log(stage)
 
         console.log(`[Info] Add ${tool.name}`)
         page.addElement({
@@ -100,6 +98,8 @@ export default function LeftSidebar() {
             if (!confirm("Create a new page ?")) return
             createPage("Page name")
         }
+        
+        setCurrentPage(value)
     }
 
     const handlePageDelete = () => {
@@ -117,12 +117,12 @@ export default function LeftSidebar() {
                 </Button>
             ))}
             <div className='mt-auto flex'>
-                <Button className='p-0.5' disabled={currentPage == 0} onClick={() => handleSetCurrentPage(currentPage >= 1 ? currentPage - 1 : currentPage)}><MdKeyboardArrowLeft size={30} /></Button>
+                <Button className='p-0.5 disabled:text-neutral-400 disabled:bg-zinc-950 disabled:cursor-not-allowed' disabled={currentPage == 0} onClick={() => handleSetCurrentPage(currentPage >= 1 ? currentPage - 1 : currentPage)}><MdKeyboardArrowLeft size={30} /></Button>
                 <p className='my-auto grow'>{currentPage + 1} / {pages.length}</p>
-                <Button className='p-0.5' disabled={currentPage == 9} onClick={() => handleSetCurrentPage(currentPage < 9 ? currentPage + 1 : currentPage)}><MdKeyboardArrowRight size={30} /></Button>
+                <Button className='p-0.5 disabled:text-neutral-400 disabled:bg-zinc-950 disabled:cursor-not-allowed' disabled={currentPage == 9} onClick={() => handleSetCurrentPage(currentPage < 9 ? currentPage + 1 : currentPage)}><MdKeyboardArrowRight size={30} /></Button>
             </div>
             <div className='flex gap-[5px]'>
-                <Input className='w-full text-sm' type="text" name='page' value={pages[currentPage].name || ""} onChange={(e) => page.update({ name: e.target.value })} />
+                <Input className='w-full text-sm' type="text" name='page' value={page.name || ""} onChange={(e) => page.update({ name: e.target.value })} />
                 <Button className='bg-red-500 hover:bg-red-600 disabled:bg-red-800 disabled:cursor-not-allowed p-[10px]' disabled={currentPage == 0} onClick={handlePageDelete}><BiTrash size={22} /></Button>
             </div>
             <Button onClick={handleBuild}>Build project</Button>

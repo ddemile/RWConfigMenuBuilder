@@ -16,7 +16,8 @@ export interface Element {
     y: number,
     options: any,
     customProps?: Record<string, any>,
-    defaultValue?: any
+    defaultValue?: any,
+    title?: boolean
 }
 
 export interface Page {

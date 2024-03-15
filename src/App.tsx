@@ -1,7 +1,7 @@
 import { KonvaEventObject, Node } from 'konva/lib/Node'
 import { Shape } from 'konva/lib/Shape'
 import { Stage as KonvaStage } from 'konva/lib/Stage'
-import { createElement, useRef, useState } from 'react'
+import { createElement, useEffect, useRef, useState } from 'react'
 import { Layer, Stage, Transformer } from 'react-konva'
 import Modal from "react-modal"
 import './App.css'
@@ -10,6 +10,7 @@ import LeftSidebar from './components/LeftSidebar.tsx'
 import ProjectLinks from './components/ProjectLinks.tsx'
 import RightSidebar from './components/RightSidebar.tsx'
 import StageContext from './contexts/StageContext.tsx'
+import useConfig from './hooks/useConfig.ts'
 import useCurrentPage from './hooks/useCurrentPage.ts'
 import usePages from './hooks/usePages.ts'
 import { dragend, dragmove } from './utils/konvaSnap.tsx'
@@ -23,6 +24,7 @@ function App() {
   const store = usePages()
   const [selectedShape, setSelectedShape] = useState<Shape>()
   const stage = stageRef.current as any as KonvaStage
+  const { config } = useConfig()
 
   const getElementByNode = (node: Node) => page.elements.find(element => element.id == node?.attrs?.id)
 
@@ -44,6 +46,20 @@ function App() {
 
     return enabledAnchors
   }
+
+  useEffect(() => {
+    if (config.titleElement != null) {
+      const page = store.pages[0]
+
+      const elements = page.elements.slice()
+      const element = elements.find(element => element.title)
+      if (!element) return
+      element.hidden = !config.titleElement
+      store.updatePage(0, {
+        elements
+      })
+    }
+  }, [config])
 
   const handleTransform = (e: KonvaEventObject<Event>) => {
     e.target.setAttrs({
@@ -78,13 +94,6 @@ function App() {
     const newX = Math.max(0, Math.min(rectX, stageWidth - rectWidth));
     const newY = Math.max(0, Math.min(rectY, stageHeight - rectHeight));
 
-    // Manually update the position of the rectangle
-
-    // console.log({
-    //     x: newX,
-    //     y: newY,
-    // })
-
     const data = [...page.elements]
     const rectangle = data.find(rect => rect.id == event.target.attrs.id)!
     rectangle.x = Math.round(newX)
@@ -105,7 +114,7 @@ function App() {
       setSelectedShape(undefined); // Unselect the current element
       page.update({ selectedElementId: null })
     }
-};
+  };
 
   return (
     <StageContext.Provider value={{ stageRef: stageRef as any, selectedShape: selectedShape!, setSelectedShape }}>

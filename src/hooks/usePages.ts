@@ -1,10 +1,12 @@
 import { create } from "zustand"
+import { modTitleElement } from "../utils/elements.tsx"
 import { Page } from "../utils/types.ts"
 
 export interface PagesState {
     pages: Page[],
     currentPage: number,
     currentUniqueId: number,
+    setCurrentPage: (index: number) => void,
     uniqueId: () => string,
     setCurrentUniqueId: (uniqueId: number) => void,
     createPage: (name: string) => void,
@@ -14,9 +16,12 @@ export interface PagesState {
 }
 
 export default create<PagesState>()((set, get) => ({
-    pages: [{ name: "Main", elements: [], selectedElementId: null }],
+    pages: [{ name: "Main", elements: [modTitleElement], selectedElementId: null }],
     currentPage: 0,
     currentUniqueId: 0,
+    setCurrentPage(index) {
+        set({ currentPage: index })
+    },
     uniqueId() {
         const { currentUniqueId } = get()
         
@@ -30,7 +35,7 @@ export default create<PagesState>()((set, get) => ({
     createPage(name) {
         const { pages } = get()
 
-        return [...pages, { name, elements: [], selectedElementId: null }]
+        set({ pages: [...pages, { name, elements: [], selectedElementId: null }] })
     },
     deletePage(index) {
         if (index < 1) return;
