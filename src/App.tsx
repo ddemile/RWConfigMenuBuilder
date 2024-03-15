@@ -4,6 +4,7 @@ import { Stage as KonvaStage } from 'konva/lib/Stage'
 import { createElement, useEffect, useRef, useState } from 'react'
 import { Layer, Stage, Transformer } from 'react-konva'
 import Modal from "react-modal"
+import { Toaster } from 'sonner'
 import './App.css'
 import ConfigModal from './components/ConfigModal.tsx'
 import LeftSidebar from './components/LeftSidebar.tsx'
@@ -118,6 +119,7 @@ function App() {
 
   return (
     <StageContext.Provider value={{ stageRef: stageRef as any, selectedShape: selectedShape!, setSelectedShape }}>
+      <Toaster richColors />
       <ConfigModal />
       <ProjectLinks />
       <main className='h-[100vh] m-0 flex'>

@@ -24,7 +24,7 @@ export function defineTool<const O extends ToolOption[]>(tool: {
     element?: (options: Element & { options: Record<O[number]["property"], any> }, store: PagesState) => any,
     subElement?: (element: Element & { options: Record<O[number]["property"], any> }, store: PagesState) => any,
     options?: O,
-    onBuild: (options: Record<O[number]["property"], any>) => {
+    onBuild: (element: Omit<Element, "options"> & { options: Record<O[number]["property"], any> }) => {
         variables?: Record<string, any>,
         template: string,
         configurableType?: string,

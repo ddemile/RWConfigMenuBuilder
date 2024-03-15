@@ -129,7 +129,8 @@ export default [
                 defaultValue: 0
             }
         ],
-        onBuild: ({ sliderValue }) => ({
+        onBuild: ({ options: { sliderValue } }) => {
+        return ({
             template: "slider",
             variables: {
                 defaultValue: Math.round(sliderValue),
@@ -139,7 +140,7 @@ export default [
             offset: {
                 y: -10
             }
-        })
+        })}
     }),
     defineTool({
         name: "OpSliderSubtle",
@@ -257,7 +258,7 @@ export default [
                 defaultValue: 0
             }
         ],
-        onBuild: ({ updownValue }) => ({
+        onBuild: ({ options: { updownValue } }) => ({
             variables: {
                 defaultValue: Math.round(updownValue),
                 acceptable: "config_acceptable_range"

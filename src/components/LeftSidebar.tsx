@@ -66,7 +66,7 @@ export default function LeftSidebar() {
                 mainClass.add(initialize)
                 pages.forEach((page, index) => {
                     for (let element of page.elements.filter(element => !element.hidden)) {
-                        let { name, description, type, x, y, defaultValue } = element;
+                        let { name, description, type, x, y } = element;
                         const tool = getElementTool(type)!
                         const { template, variables = {}, configurableType, offset = {} } = tool.onBuild(element)
                         const offsetX = offset.x ?? 0
@@ -75,11 +75,11 @@ export default function LeftSidebar() {
                         const elementName = toCamelCase(config.addToolType ? name + tool.name.replace("Op", "") : name)
 
                         console.log(`Stage Y : ${stage?.current.height()} | Y: ${y} | ${element.height} | Total: ${stage?.current.height() - y - element.height}`)
-                        const component = new Component(template, compiler.componentTemplates).setVariables({ ...element, ...variables, name: elementName, y: stage?.current.height() - y - element.height + offsetY, x: x + offsetX, pageIndex: index.toString(), configurable: configurableType ? toCamelCase(name) : undefined })
+                        const component = new Component(template, compiler.componentTemplates).setVariables({ ...element, ...element.options, ...variables, name: elementName, y: stage?.current.height() - y - element.height + offsetY, x: x + offsetX, pageIndex: index.toString(), configurable: configurableType ? toCamelCase(name) : undefined })
 
                         if (component) {
                             initialize.add(component)
-                            if (configurableType) mainClass.add(new Component("configurable", compiler.componentTemplates).setVariables({ name: toCamelCase(name), description, defaultValue: defaultValue ?? variables.defaultValue?.toString(), type: configurableType, tag: description, acceptable: variables.acceptable ? new Component(variables.acceptable, compiler.componentTemplates).build({ variables: { ...element, ...variables }, inline: false }) : "null" }))
+                            if (configurableType) mainClass.add(new Component("configurable", compiler.componentTemplates).setVariables({ name: toCamelCase(name), description, defaultValue: element.options.defaultValue ?? variables.defaultValue?.toString(), type: configurableType, tag: description, acceptable: variables.acceptable ? new Component(variables.acceptable, compiler.componentTemplates).build({ variables: { ...element, ...variables }, inline: false }) : "null" }))
                         }
                     }
                 })
