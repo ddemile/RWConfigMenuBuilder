@@ -3,7 +3,7 @@ name: Deployer
 on:
   push:
     branches:
-      - master  # Replace with your branch name
+      - main  # Replace with your branch name
 
 jobs:
   notify-api:
