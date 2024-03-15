@@ -2,6 +2,8 @@ public override void Initialize()
 {
     base.Initialize();
     
+    Color color;
+    
     Tabs = new OpTab[$"TABS"];
 
     $"CONTENT"

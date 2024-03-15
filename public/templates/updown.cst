@@ -1,6 +1,8 @@
-OpUpdown $"NAME" = new OpUpdown($"CONFIGURABLE", new Vector2($"X"f, $"Y"f), $"WIDTH");
-ColorUtility.TryParseHtmlString("$"COLOR"", out Color $"NAME"Color);
-$"NAME".colorEdge = $"NAME"Color;
-$"NAME".description = $"CONFIGURABLE".info.description;
-
-Tabs[$"PAGEINDEX"].AddItems($"NAME");
+ColorUtility.TryParseHtmlString("$"COLOR"", out color);
+Tabs[$"PAGEINDEX"].AddItems(
+    new OpUpdown($"CONFIGURABLE", new Vector2($"X"f, $"Y"f), $"WIDTH")
+    {
+        colorEdge = color,
+        description = $"CONFIGURABLE".info.description
+    }
+);

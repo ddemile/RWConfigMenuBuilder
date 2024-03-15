@@ -1,11 +1,12 @@
 import store from "../hooks/useUniqueId.ts"
 import { Element } from "./types.ts"
 
-type RequiredProps = "name" | "height" | "width" | "x" | "y" | "type"
+type RequiredProps = "height" | "width" | "x" | "y" | "type"
 
 type InitElement = Partial<Omit<Element, RequiredProps>> & Required<Pick<Element, RequiredProps>>
 
 export default function populateElement({
+    name = "",
     color = "#a9a4b2",
     id = store.getState().uniqueId(),
     options = {},
@@ -16,6 +17,7 @@ export default function populateElement({
 }: InitElement): Element {
     return {
         ...element,
+        name,
         id,
         color,
         options,

@@ -6,7 +6,7 @@ import { Stage as KonvaStage } from 'react-konva';
 type Context = {
     stageRef: MutableRefObject<typeof KonvaStage>,
     selectedShape: Shape,
-    setSelectedShape: (shape: Shape) => void
+    setSelectedShape: (shape: Shape | undefined) => void
 }
 
 const StageContext = createContext<Context>({

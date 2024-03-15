@@ -1,6 +1,7 @@
 import { ChangeEvent } from 'react';
 import { FiDownload, FiSettings, FiUpload } from 'react-icons/fi';
 import { toast } from 'sonner';
+import { useSelectedShape } from '../contexts/StageContext.tsx';
 import useConfig from '../hooks/useConfig.ts';
 import useCurrentPage from '../hooks/useCurrentPage.ts';
 import usePages from '../hooks/usePages.ts';
@@ -11,6 +12,7 @@ export default function RightSidebar() {
     const { pages, setPages, setCurrentUniqueId, currentUniqueId } = usePages()
     const page = useCurrentPage()
     const { setIsOpen } = useConfig()
+    const { setSelectedShape } = useSelectedShape()
 
     const handleDownload = () => {
     const fileData = JSON.stringify({ pages, uniqueId: currentUniqueId });
@@ -41,10 +43,17 @@ export default function RightSidebar() {
         e.target.value = ""
     }
 
+    const handleDelete = () => {
+        page.update({
+            elements: page.elements.filter(rectangle => { console.log("rect id: " + rectangle.id + "selected: " + page.selectedElement); return rectangle.id != page.selectedElement?.id })
+        })
+        
+        setSelectedShape(undefined)
+    }
     return (
-        <nav className='bg-white flex flex-col m-0 h-full box-border w-[250px] p-[5px] border-l border-l-[#dadada] text-left [&>input]:mb-[10px]'>
+        <nav className='bg-white flex flex-col m-0 h-full box-border w-[250px] p-[5px] border-l border-l-[#dadada] text-left [&>input]:mb-[10px] [&>div>input]:mb-[10px] [&>div>select]:mb-[10px]'>
             <Options />
-            <Button onClick={() => page.update({ elements: page.elements.filter(rectangle => { console.log("rect id: " + rectangle.id + "selected: " + page.selectedElement); return rectangle.id != page.selectedElement?.id }) })}>Delete</Button>
+            <Button onClick={handleDelete}>Delete</Button>
             <Button className='flex justify-center items-center gap-[10px] mt-auto mb-[10px]' onClick={() => setIsOpen(true)}><FiSettings size={25} />Settings</Button>
             <Button onClick={handleDownload} className='flex justify-center items-center gap-[10px]' style={{ marginBottom: "10px" }}><FiDownload size={25} />Download</Button>
             <label className='text-white white rounded-lg border border-transparent py-[0.6em] px-[1.2em] text-[1em] font-medium bg-[#1a1a1a] cursor-pointer flex justify-center items-center gap-[10px]' htmlFor='load-save'><FiUpload size={25} />Load save</label>

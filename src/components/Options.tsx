@@ -1,6 +1,5 @@
-import { Node } from "konva/lib/Node";
-import React, { ChangeEvent } from "react";
-import { useSelectedShape, useStage } from "../contexts/StageContext.tsx";
+import React, { ChangeEvent, useMemo } from "react";
+import { useStage } from "../contexts/StageContext.tsx";
 import useCurrentPage from "../hooks/useCurrentPage.ts";
 import usePages from "../hooks/usePages.ts";
 import { ToolOption } from "../utils/config.tsx";
@@ -12,7 +11,6 @@ export default function Options() {
     const { pages, currentPage, updatePage } = usePages()
     const page = useCurrentPage()
     const stage = useStage()
-    const { selectedShape } = useSelectedShape()
 
     const updateElementProperty = (element: Element, property: string, value: any) => {
         if (getElementTool(element)?.options?.find(option => option.property == property)) {
@@ -59,50 +57,51 @@ export default function Options() {
 
 
     function handleInputChangeEvent(e: ChangeEvent<HTMLInputElement>) {
-    const { updatePage, currentPage, pages } = usePages.getState()
+        const { updatePage, currentPage, pages } = usePages.getState()
 
-    const name = e.target.name;
-    const value = e.target.value as any as number;
-    const type = e.target.type
-    const selectedElement = pages[currentPage].elements.find(element => element.id == pages[currentPage].selectedElementId)!
+        const name = e.target.name;
+        const value = e.target.value as any as number;
+        const type = e.target.type
+        const selectedElement = pages[currentPage].elements.find(element => element.id == pages[currentPage].selectedElementId)!
 
-    const data = [...pages[currentPage].elements]
-    const element = data.find(rect => rect.id == selectedElement.id)
+        const data = [...pages[currentPage].elements]
+        const element = data.find(rect => rect.id == selectedElement.id)
 
-    if (!element) return;
+        if (!element) return;
 
-    const newValue = type == "number" ? Math.max(0, Math.min(value, stage.current.width() - (name == "x" ? element.width : element.height))) : value
+        const newValue = type == "number" ? Math.max(0, Math.min(value, stage.current.width() - (name == "x" ? element.width : element.height))) : value
 
-    if (getElementTool(element)?.options?.find(option => option.property == name)) {
-        element.options[name] = newValue
-    } else {
-        (element as any)[name] = newValue
+        if (getElementTool(element)?.options?.find(option => option.property == name)) {
+            element.options[name] = newValue
+        } else {
+            (element as any)[name] = newValue
+        }
+
+        updatePage(currentPage, { elements: data })
     }
 
-
-    updatePage(currentPage, { elements: data })
-}
-
-    const getElementByNode = (node: Node) => page.elements.find(element => element.id == node?.attrs?.id)
+    const element = page.selectedElement
+    const tool = useMemo(() => getElementTool(page.selectedElement?.type!), [page.selectedElement])
+    const hasConfigurable = useMemo(() => !!tool?.onBuild(element!).configurableType, [tool])
 
     return <>
-        <label htmlFor="name">Name</label>
-        <Input type="text" name='name' value={page.selectedElement?.name || ""} onChange={handleInputChangeEvent} />
+        <label htmlFor="name">Name {!hasConfigurable && element && "(Optional)"}</label>
+        <Input type="text" name='name' value={element?.name || ""} onChange={handleInputChangeEvent} />
         <label htmlFor="name">Description</label>
-        <Input type="text" name='description' value={page.selectedElement?.description || ""} onChange={handleInputChangeEvent} />
-        {!getElementByNode(selectedShape!)?.locked?.position && <>
+        <Input type="text" name='description' value={element?.description || ""} onChange={handleInputChangeEvent} />
+        {!element?.locked?.position && <>
             <label htmlFor="name">X pos</label>
-            <Input type='number' name='x' value={page.selectedElement?.x || 0} onChange={handleInputChangeEvent}></Input>
+            <Input type='number' name='x' value={element?.x || 0} onChange={handleInputChangeEvent}></Input>
         </>}
-        {!getElementByNode(selectedShape!)?.locked?.position && <>
+        {!element?.locked?.position && <>
             <label htmlFor="name">Y pos</label>
-            <Input type='number' name='y' value={page.selectedElement?.y || 0} onChange={handleInputChangeEvent}></Input>
+            <Input type='number' name='y' value={element?.y || 0} onChange={handleInputChangeEvent}></Input>
         </>}
-        {getElementTool(page.selectedElement?.type!)?.resizable?.width && !getElementByNode(selectedShape!)?.locked?.transform && <>
+        {tool?.resizable?.width && !element?.locked?.transform && <>
             <label htmlFor="name">Width</label>
-            <Input type='number' name='width' value={parseFloat((page.selectedElement?.width!).toFixed(1)) || 0} onChange={handleInputChangeEvent}></Input>
+            <Input type='number' name='width' value={parseFloat((element?.width!).toFixed(1)) || 0} onChange={handleInputChangeEvent}></Input>
         </>}
-        {getElementTool(page.selectedElement?.type!)?.resizable?.height && !getElementByNode(selectedShape!)?.locked?.transform && <>
+        {tool?.resizable?.height && !element?.locked?.transform && <>
             <label htmlFor="name">Height</label>
             <Input type='number' name='height' value={parseFloat((page.selectedElement?.height!).toFixed(2)) || 0} onChange={handleInputChangeEvent}></Input>
         </>}

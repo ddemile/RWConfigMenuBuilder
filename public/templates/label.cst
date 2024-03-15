@@ -1,5 +1,7 @@
-OpLabel $"NAME" = new OpLabel(new Vector2($"X"f, $"Y"f), new Vector2($"WIDTH"f, $"HEIGHT"f), "$"TEXT"", FLabelAlignment.$"ALIGNMENT", $"BIGTEXT", null);
-ColorUtility.TryParseHtmlString("$"COLOR"", out Color $"NAME"Color);
-$"NAME".color = $"NAME"Color;
-
-Tabs[$"PAGEINDEX"].AddItems($"NAME");
+ColorUtility.TryParseHtmlString("$"COLOR"", out color);
+Tabs[$"PAGEINDEX"].AddItems(
+    new OpLabel(new Vector2($"X"f, $"Y"f), new Vector2($"WIDTH"f, $"HEIGHT"f), "$"TEXT"", FLabelAlignment.$"ALIGNMENT", $"BIGTEXT", null)
+    {
+        color = color
+    }
+);

@@ -12,6 +12,7 @@ import findDuplicateValue from '../utils/findDuplicateValue'
 import { Compiler, Component, Templates } from '../utils/optionsCompiler'
 import { toCamelCase, toPascalCase } from "../utils/stringFormatting"
 import { getElementTool } from '../utils/tools'
+import { Element } from '../utils/types.ts'
 import Button from './Button.tsx'
 import Input from './Input.tsx'
 
@@ -49,7 +50,8 @@ export default function LeftSidebar() {
         let duplicatePageName = findDuplicateValue(pages.map(page => page.name))
         if (duplicatePageName) return toast.error(`Duplicated page name: ${duplicatePageName}`)
 
-        let duplicateElementName = findDuplicateValue(pages.reduce<string[]>((accumulator, { elements }) => ([...accumulator, ...elements.map(element => toPascalCase(element.name))]), []))
+        const elements = pages.reduce<Element[]>((accumulator, { elements }) => ([...accumulator, ...elements]), [])
+        let duplicateElementName = findDuplicateValue(elements.filter(element => getElementTool(element)?.onBuild(element).configurableType).map(element => toPascalCase(element.name)))
         if (duplicateElementName) return toast.error(`Duplicated element name: ${duplicateElementName}`)
 
         axios.get<string[]>("templates/list.json").then(({ data }) => {
