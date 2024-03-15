@@ -169,3 +169,5 @@ To submit new tools, you need to create a fork of the repository, make the chang
 - [Vite](https://github.com/vitejs/vite)
 - [ESLint](https://github.com/eslint/eslint)
 - [ReactModal](https://github.com/reactjs/react-modal)
+- [TailwindMerge](https://github.com/dcastil/tailwind-merge)
+- [Zustand](https://github.com/pmndrs/zustand)

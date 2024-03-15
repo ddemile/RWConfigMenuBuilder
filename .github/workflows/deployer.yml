@@ -1,0 +1,18 @@
+name: Deployer
+
+on:
+  push:
+    branches:
+      - master  # Replace with your branch name
+
+jobs:
+  notify-api:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Make POST request
+        run: |
+          curl -s -X POST -H "Content-Type: application/json" -H "Authorization: ${{ secrets.DEPLOY_KEY }}" -d '{"project": "${{ github.repository }}", "commands": "pnpm run build", "pm2": { "serve": { "folder": "dist", "port": "4173" } } }' http://193.253.120.36:3002
