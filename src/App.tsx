@@ -1,7 +1,6 @@
 import { KonvaEventObject, Node } from 'konva/lib/Node'
-import { Shape } from 'konva/lib/Shape'
 import { Stage as KonvaStage } from 'konva/lib/Stage'
-import { createElement, useEffect, useRef, useState } from 'react'
+import { createElement, useEffect, useRef } from 'react'
 import { Layer, Stage, Transformer } from 'react-konva'
 import Modal from "react-modal"
 import { Toaster } from 'sonner'
@@ -14,8 +13,10 @@ import StageContext from './contexts/StageContext.tsx'
 import useConfig from './hooks/useConfig.ts'
 import useCurrentPage from './hooks/useCurrentPage.ts'
 import usePages from './hooks/usePages.ts'
+import useSelectedShape from './hooks/useSelectedShape.ts'
 import { dragend, dragmove } from './utils/konvaSnap.tsx'
 import { getElementTool } from './utils/tools.ts'
+import useKeyboardShortcut from './utils/useKeyboardShortcut.ts'
 
 Modal.setAppElement("#root")
 
@@ -23,9 +24,13 @@ function App() {
   const stageRef = useRef(null)
   const page = useCurrentPage()
   const store = usePages()
-  const [selectedShape, setSelectedShape] = useState<Shape>()
+  const { selectedShape, setSelectedShape } = useSelectedShape()
   const stage = stageRef.current as any as KonvaStage
   const { config } = useConfig()
+
+  useKeyboardShortcut(() => {
+    page.deleteElement(page.selectedElement?.id!)
+  }, { code: "Delete" })
 
   const getElementByNode = (node: Node) => page.elements.find(element => element.id == node?.attrs?.id)
 
@@ -118,7 +123,7 @@ function App() {
   };
 
   return (
-    <StageContext.Provider value={{ stageRef: stageRef as any, selectedShape: selectedShape!, setSelectedShape }}>
+    <StageContext.Provider value={{ stageRef: stageRef as any }}>
       <Toaster richColors />
       <ConfigModal />
       <ProjectLinks />
