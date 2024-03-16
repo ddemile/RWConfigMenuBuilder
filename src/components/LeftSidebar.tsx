@@ -13,6 +13,7 @@ import { Compiler, Component, Templates } from '../utils/optionsCompiler'
 import { toCamelCase, toPascalCase } from "../utils/stringFormatting"
 import { getElementTool } from '../utils/tools'
 import { Element } from '../utils/types.ts'
+import useKeyboardShortcut from '../utils/useKeyboardShortcut.ts'
 import Button from './Button.tsx'
 import Input from './Input.tsx'
 
@@ -81,6 +82,7 @@ export default function LeftSidebar() {
 
                         if (component) {
                             initialize.add(component)
+                            initialize.add( new Component("rectangle", compiler.componentTemplates).setVariables({ ...element, ...element.options, ...variables, name: elementName, y: stage?.current.height() - y - element.height + offsetY, x: x + offsetX, pageIndex: index.toString(), configurable: configurableType ? toCamelCase(name) : undefined }))
                             if (configurableType) mainClass.add(new Component("configurable", compiler.componentTemplates).setVariables({ name: toCamelCase(name), description, defaultValue: element.options.defaultValue ?? variables.defaultValue?.toString(), type: configurableType, tag: description, acceptable: variables.acceptable ? new Component(variables.acceptable, compiler.componentTemplates).build({ variables: { ...element, ...element.options, ...variables }, inline: false }) : "null" }))
                         }
                     }
@@ -110,6 +112,8 @@ export default function LeftSidebar() {
         page.delete()
         toast.info(`Page ${currentPage + 1} deleted`)
     }
+
+    useKeyboardShortcut(handleBuild, { code: "KeyB", ctrlKey: true })
 
     return (
         <nav className='bg-white flex flex-col m-0 h-full box-border w-[250px] p-[5px] border-r border-r-[#dadada] gap-[10px]'>

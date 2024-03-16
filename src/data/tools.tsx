@@ -41,7 +41,7 @@ export default [
             text={options.text} 
             align={options.alignment?.toLowerCase()}
             verticalAlign='middle'
-            fontSize={options.bigText == "true" ? 20 * 1.7 : 20}
+            fontSize={options.bigText == "true" ? 14 * 1.7 : 14}
         />,
         options: [
             {
