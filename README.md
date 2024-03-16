@@ -153,7 +153,7 @@ When an element is builded it uses a template, they are `.cst` files who contain
 You can nest templates, to create a parent template you just need to add a variable with `CONTENT` inside (but you need to use that)
 
 ## Adding new templates
-To add a new template, create a new file ending with `.cst` inside `public/templates`, you also need to add the name of the template (the name of the file without the extension)
+To add a new template, create a new file ending with `.cst` inside `public/templates`, you also need to add the name of the template in `list.json` (the name of the template file without the extension)
 
 ## Submiting new tools
 To submit new tools, you need to create a fork of the repository, make the changes to `tools.tsx` and `public/templates`, create a pull request
