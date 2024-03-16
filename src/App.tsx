@@ -92,8 +92,8 @@ function App() {
 
   const handleTransform = (e: KonvaEventObject<Event>) => {
     e.target.setAttrs({
-      width: Math.max(0, e.target.width()) * e.target.scaleX(),
-      height: Math.max(0, e.target.height()) * e.target.scaleY(),
+      width: Math.abs(e.target.width()) * Math.abs(e.target.scaleX()),
+      height: Math.abs(e.target.height()) * Math.abs(e.target.scaleY()),
       scaleX: 1,
       scaleY: 1,
     });
@@ -101,8 +101,8 @@ function App() {
     selectedShape?.setAttrs(e);
     const elements = page.elements.slice()
     let element = elements.find(element => element.id == e.target.attrs.id)!
-    element.width = Math.max(0, e.target.width())
-    element.height = Math.max(0, e.target.height())
+    element.width = Math.abs(e.target.width())
+    element.height = Math.abs(e.target.height())
     element.x = Math.round(e.target.x())
     element.y = Math.round(e.target.y())
 

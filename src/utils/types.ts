@@ -15,8 +15,6 @@ export interface Element {
     x: number,
     y: number,
     options: any,
-    customProps?: Record<string, any>,
-    defaultValue?: any,
     title?: boolean
 }
 
