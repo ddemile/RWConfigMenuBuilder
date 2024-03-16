@@ -2,7 +2,6 @@ import { AnchorHTMLAttributes, DetailedHTMLProps } from "react"
 import { IconType } from "react-icons"
 import { BsDiscord, BsGithub } from "react-icons/bs"
 import { twMerge } from "tailwind-merge"
-import './ProjectLinks.css'
 
 function Link({ className, icon, ...props }: DetailedHTMLProps<AnchorHTMLAttributes<HTMLAnchorElement>, HTMLAnchorElement> & { icon: IconType }) {
   const Icon = icon

@@ -54,8 +54,6 @@ export default function Options() {
         }
     }
 
-
-
     function handleInputChangeEvent(e: ChangeEvent<HTMLInputElement>) {
         const { updatePage, currentPage, pages } = usePages.getState()
 
@@ -107,7 +105,7 @@ export default function Options() {
         </>}
         <label htmlFor="name">Color</label>
         <Input className="appearance-none p-0 w-auto" type='color' name='color' value={page.selectedElement?.color || "#ffffff"} onChange={handleInputChangeEvent}></Input>
-        {getElementTool(page.selectedElement?.type!)?.options?.map((option, index) => {
+        {tool?.options?.map((option, index) => {
             const value = page.selectedElement?.options?.[option.property]
             const type = typeof page.selectedElement?.options[option.property]
 
