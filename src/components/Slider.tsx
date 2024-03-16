@@ -1,6 +1,7 @@
 import { KonvaEventObject } from "konva/lib/Node";
 import { useEffect, useState } from "react";
 import { Rect } from "react-konva";
+import { useStage } from "../contexts/StageContext.tsx";
 
 const sliderHandleSize = {
     width: 13,
@@ -20,8 +21,9 @@ type SliderProps = {
 }
 
 export function Slider({ width, height, x, y, color, onSliderValueChange, value, maxValue, minValue }: SliderProps) {
+    const stage = useStage()
     const [sliderValue, setSliderValue] = useState(0);
-
+    
     const handleSliderDrag = (e: KonvaEventObject<DragEvent>) => {
         const newValue = (e.target.x() + sliderHandleSize.width / 2 - x) / width;
         const scaledValue = minValue + newValue * (maxValue - minValue);
@@ -35,6 +37,8 @@ export function Slider({ width, height, x, y, color, onSliderValueChange, value,
 
     const scaledSliderValue = (sliderValue - minValue) / (maxValue - minValue);
     const handleX = x + scaledSliderValue * width - sliderHandleSize.width / 2;
+
+    console.log(y + height / 2 - sliderHandleSize.height / 2)
 
     return (
         <>
@@ -52,8 +56,8 @@ export function Slider({ width, height, x, y, color, onSliderValueChange, value,
                 draggable
                 onDragMove={handleSliderDrag}
                 dragBoundFunc={(pos) => ({
-                    x: Math.max(x, Math.min(pos.x, width + x)) - sliderHandleSize.width / 2,
-                    y: y + height / 2 - sliderHandleSize.height / 2,
+                    x: (Math.max(x, Math.min(pos.x / stage.current.scaleX(), width + x)) - sliderHandleSize.width / 2) * stage.current.scaleX(),
+                    y: (y + height / 2 - sliderHandleSize.height / 2) * stage.current.scaleX(),
                 })}
             />
         </>

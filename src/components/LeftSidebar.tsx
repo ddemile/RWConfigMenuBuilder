@@ -8,6 +8,7 @@ import useConfig from '../hooks/useConfig.ts'
 import useCurrentPage from '../hooks/useCurrentPage.ts'
 import usePages from '../hooks/usePages.ts'
 import { Tool } from '../utils/config.tsx'
+import { STAGE_HEIGHT, STAGE_WIDTH } from '../utils/constants.ts'
 import findDuplicateValue from '../utils/findDuplicateValue'
 import { Compiler, Component, Templates } from '../utils/optionsCompiler'
 import { toCamelCase, toPascalCase } from "../utils/stringFormatting"
@@ -31,8 +32,8 @@ export default function LeftSidebar() {
         page.addElement({
             type: tool.name,
             name: `My${tool.name}`,
-            x: stage.current.width() / 2 - width / 2,
-            y: stage.current.height() / 2 - height / 2,
+            x: STAGE_WIDTH / 2 - width / 2,
+            y: STAGE_HEIGHT / 2 - height / 2,
             width,
             height,
             locked: {
@@ -82,7 +83,6 @@ export default function LeftSidebar() {
 
                         if (component) {
                             initialize.add(component)
-                            initialize.add( new Component("rectangle", compiler.componentTemplates).setVariables({ ...element, ...element.options, ...variables, name: elementName, y: stage?.current.height() - y - element.height + offsetY, x: x + offsetX, pageIndex: index.toString(), configurable: configurableType ? toCamelCase(name) : undefined }))
                             if (configurableType) mainClass.add(new Component("configurable", compiler.componentTemplates).setVariables({ name: toCamelCase(name), description, defaultValue: element.options.defaultValue ?? variables.defaultValue?.toString(), type: configurableType, tag: description, acceptable: variables.acceptable ? new Component(variables.acceptable, compiler.componentTemplates).build({ variables: { ...element, ...element.options, ...variables }, inline: false }) : "null" }))
                         }
                     }

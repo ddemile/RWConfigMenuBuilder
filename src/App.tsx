@@ -1,5 +1,4 @@
 import { KonvaEventObject, Node } from 'konva/lib/Node'
-import { Stage as KonvaStage } from 'konva/lib/Stage'
 import { createElement, useEffect, useRef } from 'react'
 import { Layer, Stage, Transformer } from 'react-konva'
 import Modal from "react-modal"
@@ -14,6 +13,7 @@ import useConfig from './hooks/useConfig.ts'
 import useCurrentPage from './hooks/useCurrentPage.ts'
 import usePages from './hooks/usePages.ts'
 import useSelectedShape from './hooks/useSelectedShape.ts'
+import { STAGE_HEIGHT, STAGE_WIDTH } from './utils/constants.ts'
 import { dragend, dragmove } from './utils/konvaSnap.tsx'
 import { getElementTool } from './utils/tools.ts'
 import useKeyboardShortcut from './utils/useKeyboardShortcut.ts'
@@ -25,8 +25,31 @@ function App() {
   const page = useCurrentPage()
   const store = usePages()
   const { selectedShape, setSelectedShape } = useSelectedShape()
-  const stage = stageRef.current as any as KonvaStage
   const { config } = useConfig()
+
+  const updateSelectedElementPos = (pos: Partial<{ x: number, y: number }>) => {
+    if (!page.selectedElement || !selectedShape) return;
+
+    const stageWidth = STAGE_WIDTH;
+    const stageHeight = STAGE_HEIGHT;
+    const rectWidth = selectedShape!.width();
+    const rectHeight = selectedShape.height();
+    pos = { x: page.selectedElement.x, y: page.selectedElement.y, ...pos }
+
+    // Limit the position of the rectangle within the bounds of the stage
+    const newX = Math.max(0, Math.min(pos.x!, stageWidth - rectWidth));
+    const newY = Math.max(0, Math.min(pos.y!, stageHeight - rectHeight));
+
+    pos.x = Math.round(newX)
+    pos.y = Math.round(newY)
+
+    page.updateSelectedElement(pos)
+  }
+
+  useKeyboardShortcut(() => updateSelectedElementPos({ x: page.selectedElement!.x - 1 }), { code: "ArrowLeft" })
+  useKeyboardShortcut(() => updateSelectedElementPos({ y: page.selectedElement!.y - 1 }), { code: "ArrowUp" })
+  useKeyboardShortcut(() => updateSelectedElementPos({ x: page.selectedElement!.x + 1 }), { code: "ArrowRight" })
+  useKeyboardShortcut(() => updateSelectedElementPos({ y: page.selectedElement!.y + 1 }), { code: "ArrowDown" })
 
   useKeyboardShortcut(() => {
     page.deleteElement(page.selectedElement?.id!)
@@ -89,8 +112,8 @@ function App() {
   const handleRectDrag = (event: any) => {
     dragmove(event)
 
-    const stageWidth = stage.width();
-    const stageHeight = stage.height();
+    const stageWidth = STAGE_WIDTH;
+    const stageHeight = STAGE_HEIGHT;
     const rectWidth = event.target.width();
     const rectHeight = event.target.height();
     const rectX = event.target.x();
@@ -130,7 +153,7 @@ function App() {
       <main className='h-[100vh] m-0 flex'>
         <LeftSidebar />
         <div className='w-full h-full flex justify-center items-center gap-[50px]'>
-          <Stage className='bg-white shadow-xl border-2 border-black' ref={stageRef} width={600} height={600} onClick={handleStageClick}>
+          <Stage className='bg-white shadow-xl border-2 border-black' ref={stageRef} width={800} height={800} scale={{ x: 800 / STAGE_WIDTH, y: 800 / STAGE_WIDTH }} onClick={handleStageClick}>
             <Layer onDragEnd={dragend}>
               {page.elements.filter(element => !element.hidden).sort((a, b) => b.width * b.height - a.width * a.height).map((rectangle) => {
                 const tool = getElementTool(rectangle)

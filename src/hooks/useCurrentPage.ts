@@ -1,5 +1,5 @@
 import populateElement from "../utils/populateElement.ts";
-import { Page } from "../utils/types.ts";
+import { Element, Page } from "../utils/types.ts";
 import usePages from "./usePages.ts";
 import useSelectedShape from "./useSelectedShape.ts";
 
@@ -31,6 +31,17 @@ export default function useCurrentPage() {
                 selectedElementId: undefined
             })
             setSelectedShape(undefined)
+        },
+        updateSelectedElement(newProps: Partial<Element>) {
+            console.log(newProps)
+
+            const elements = structuredClone(page.elements)
+
+            const index = elements.findIndex((element) => element.id == this.selectedElement!.id)
+
+            elements[index] = { ...this.selectedElement, ...newProps } as any
+            
+            this.update({ elements })
         }
     }
 }
