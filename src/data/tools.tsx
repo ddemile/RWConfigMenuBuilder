@@ -1,8 +1,10 @@
 import { BiCheckboxChecked } from 'react-icons/bi';
 import { BsInputCursorText } from 'react-icons/bs';
 import { Rect, Text } from 'react-konva';
+import AutoCompleteInput from '../components/AutoCompleteInput.tsx';
 import Input from '../components/Input.tsx';
 import { Slider } from '../components/Slider';
+import { Updown } from '../components/Updown.tsx';
 import { Config, defineTool } from '../utils/config.tsx';
 
 export default [
@@ -222,18 +224,31 @@ export default [
     }),
     defineTool({
         name: "OpKeyBinder",
-        width: 0,
-        height: 0,
+        width: 100,
+        height: 100,
         wip: true,
+        resizable: {
+            width: true,
+            height: true
+        },
         content: "Key Binder",
+        options: [
+            {
+                name: "Updown value",
+                property: "defaultValue",
+                element: <AutoCompleteInput options={["Up", "Down"]}></AutoCompleteInput>,
+                defaultValue: ""
+            },
+        ],
         onBuild: () => ({
-            template: ""
+            template: "key_binder"
         })
     }),
     defineTool({
         name: "OpUpdown",
         width: 100,
         height: 30,
+        subElement: (widget) => <Updown {...widget} />,
         resizable: {
             width: true
         },

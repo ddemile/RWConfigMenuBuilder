@@ -56,8 +56,8 @@ export default function LeftSidebar() {
         let duplicateElementName = findDuplicateValue(elements.filter(element => getElementTool(element)?.onBuild(element).configurableType).map(element => toPascalCase(element.name)))
         if (duplicateElementName) return toast.error(`Duplicated element name: ${duplicateElementName}`)
 
-        axios.get<string[]>("templates/list.json").then(({ data }) => {
-            const promises = data.map(template => axios.get(`templates/${template}.cst`).then(({ data }) => {
+        axios.get<string[]>("/remix-menu-editor/templates/list.json").then(({ data }) => {
+            const promises = data.map(template => axios.get(`/remix-menu-editor/templates/${template}.cst`).then(({ data }) => {
                 templates[template] = data
             }))
 
